@@ -25,7 +25,7 @@ SECRET_KEY = '4oi%^c#g6r$e0@xhdxxt^^q7&l5xa@g+$y73t*e4!@%v1m491g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['139.59.152.157', 'localhost', '127.0.0.1', '*']
 
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'django_cleanup',
-    'rest_framework_httpsignature'
+
 ]
 
 MIDDLEWARE = [
