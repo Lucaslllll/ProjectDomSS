@@ -2,17 +2,39 @@ from django.db import models
 # Create your models here.
 
 
+
+class Driver(models.Model):
+    name = models.TextField()
+    plate = models.TextField()
+    vehicleType = models.TextField()
+    document = models.TextField()
+    telephone = models.TextField()
+
+
+class Notes(models.Model):
+    noteNumber = models.CharField(max_length=256)
+
+
 class Provider(models.Model):
-    name = models.CharField(max_length=1024)
-    preview = models.TextField()
-    details = models.TextField()
-    price = models.DecimalField(max_digits=16, decimal_places=2)
-    created = models.DateTimeField()
-    updated = models.DateTimeField(auto_now_add=True)
+    providerName = models.CharField(max_length=1024)
+    hour = models.DateField()
+    quantity = models.TextField()
+    isConfirmedByHeritage = models.BooleanField(default=False)
+    isConfirmedByCPD = models.BooleanField(default=False)
+    isConfirmedByArbitrator = models.BooleanField(default=False)
+    loadType = models.TextField()
+    volumeType = models.TextField()
+    isChecked = models.BooleanField(default=False)
+    isReturned = models.BooleanField(default=False)
+    isSchedule = models.BooleanField(default=False)
+    idNotes = models.ForeignKey(Notes, on_delete=models.CASCADE)
+    idDriver = models.ForeignKey(Driver, on_delete=models.CASCADE)
+
 
     class Meta:
-        ordering = ['created']
+        ordering = ['hour']
 
     def __str__(self):
-        return self.name
+        return self.providerName
+
 
