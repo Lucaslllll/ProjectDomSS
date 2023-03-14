@@ -20,7 +20,7 @@ class ProviderViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response({})
+        return Response(serializer.data)
 
 
     def create(self, request, *args, **kwargs):
