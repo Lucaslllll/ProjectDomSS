@@ -71,14 +71,14 @@ CORS_ORIGIN_WHITELIST = [
 #     'x-requested-with',
 #]
 
-CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-]
+#CORS_ALLOW_METHODS = [
+#    'DELETE',
+#    'GET',
+#    'OPTIONS',
+#    'PATCH',
+#    'POST',
+#    'PUT',
+#]
 
 
 MIDDLEWARE = [
@@ -175,9 +175,8 @@ MEDIA_ROOT = (
 
 MEDIA_URL = '/media/'
 
-from .DEFAULT import DEFAULT_HEADERS
-
-CORS_ALLOW_HEADERS = DEFAULT_HEADERS 
+#from .DEFAULT import DEFAULT_HEADERS
+#CORS_ALLOW_HEADERS = DEFAULT_HEADERS 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 #CORS_ALLOW_ALL_ORIGINS = True
