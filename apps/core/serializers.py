@@ -15,16 +15,24 @@ class NotesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProviderSerializer(serializers.ModelSerializer):
+class ProviderExcludeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Provider
         exclude = ("idNotes", "idDriver", )
+
+class ProviderSerializer(serializers.ModelSerializer):
+    driver = DriverSerializer(many=True, read_only=True)
+    notes = NotesSerializer(many=True, read_only=True)
+    providerExclude = ProviderExcludeSerializer()
+    class Meta:
+        model = Provider
+        fields = ["providerExclude", "notes", "driver"]
 
 
 class AllSerializer(serializers.ModelSerializer):
     driver = DriverSerializer()
     notes = NotesSerializer()
-    provider = ProviderSerializer()
+    provider = ProviderExcludeSerializer()
 
     class Meta:
         model = Provider

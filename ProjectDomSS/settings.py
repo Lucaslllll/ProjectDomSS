@@ -49,15 +49,15 @@ INSTALLED_APPS = [
 
 ]
 
-CORS_ORIGIN_WHITELIST = [
-'http://localhost:5173',
-'http://127.0.0.1:5173',
-'http://localhost:5173/',
-'http://127.0.0.1:5173/',
-'http://192.168.18.5:5173',
-'http://192.168.18.5:5173/',
-'*'
-]
+# CORS_ORIGIN_WHITELIST = [
+# 'http://localhost:5173',
+# 'http://127.0.0.1:5173',
+# 'http://localhost:5173/',
+# 'http://127.0.0.1:5173/',
+# 'http://192.168.18.5:5173',
+# 'http://192.168.18.5:5173/',
+# '*'
+# ]
 
 #CORS_ALLOW_HEADERS = [
 #     'accept',
@@ -117,14 +117,21 @@ WSGI_APPLICATION = 'ProjectDomSS.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'domss',
+#         'USER': 'dom',
+#         'PASSWORD': 'root1234',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'domss',
-        'USER': 'dom',
-        'PASSWORD': 'root1234',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
