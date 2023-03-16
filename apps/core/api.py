@@ -90,7 +90,7 @@ class ProviderListAPI(generics.GenericAPIView):
 
 
 class ProviderUpdateAPI(generics.GenericAPIView):
-    serializer_class = ProviderExcludeSerializer
+    serializer_class = AllSerializer
     queryset = Provider
 
     def put(self, request, *args, **kwargs):
@@ -98,6 +98,7 @@ class ProviderUpdateAPI(generics.GenericAPIView):
             p = Provider.objects.get(pk=kwargs["pk"])    
         except:
             return Response({"Error": "Id is invalid"}, status=status.HTTP_400_BAD_REQUEST)        
+
 
         p.providerName = request.data["provider"]["providerName"]
         p.hour = request.data["provider"]["hour"]
@@ -111,10 +112,33 @@ class ProviderUpdateAPI(generics.GenericAPIView):
         p.isReturned = request.data["provider"]["isReturned"]
         p.isSchedule = request.data["provider"]["isSchedule"]
 
+        d = Driver.objects.get(pk=p.idDriver.pk)
+        n = Notes.objects.get(pk=p.idNotes.pk)
+
+        d.name = request.data["driver"]["name"]
+        d.plate = request.data["driver"]["plate"]
+        d.vehicleType = request.data["driver"]["vehicleType"]
+        d.document = request.data["driver"]["document"]
+        d.telephone = request.data["driver"]["telephone"]
+
+        n.noteNumber = request.data["notes"]["noteNumber"]
+
+
         try:
             p.save()
         except:
-            return Response({"Error": "Error in Update"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"Error": "Error in Update table provider"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            d.save()
+        except:
+            return Response({"Error": "Error in Update table driver"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            n.save()
+        except:
+            return Response({"Error": "Error in Update table notes"}, status=status.HTTP_400_BAD_REQUEST)
+
 
         return Response(ProviderExcludeSerializer(p).data, status=status.HTTP_200_OK)
 
@@ -139,3 +163,15 @@ class ProviderDeleteAPI(generics.GenericAPIView):
         p.delete()        
 
         return Response({}, status=status.HTTP_200_OK)
+
+
+
+class ProviderFilterDateAPI(generics.RetrieveAPIView):
+    serializer_class = ProviderExcludeSerializer
+    queryset = Provider
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            p = Provider.objects.get(id=kwargs["pk"])
+        except:
+            return Response({"Error": "Id is invalid"}, status=status.HTTP_400_BAD_REQUEST)
