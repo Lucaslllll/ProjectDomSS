@@ -177,8 +177,14 @@ class ProviderFilterDateAPI(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         lista = []
+
+        # startTime >= createAt && endTime <= createAt
+
+         
+        # posted__gte=start_dt, posted__lt=end_dt
+
         
-        for p in Provider.objects.all().filter(createAt__range=[request.data['datetime1'], request.data['datetime2']]):
+        for p in Provider.objects.all().filter(createAt__gt=request.data['startTime'], createAt__lt=request.data["endTime"]):
             d = Driver.objects.get(id=p.idDriver.id)
             n = Notes.objects.get(id=p.idNotes.id)
 
@@ -199,6 +205,7 @@ class ProviderFilterDateAPI(generics.GenericAPIView):
                 "isChecked": p.isChecked,
                 "isReturned": p.isReturned,
                 "isSchedule": p.isSchedule,
+                "createAt": p.createAt,
                 "notes": notes.data,
                 "driver": driver.data
             }

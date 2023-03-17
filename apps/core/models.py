@@ -18,7 +18,7 @@ class Notes(models.Model):
 class Provider(models.Model):
     providerName = models.CharField(max_length=1024)
     hour = models.DateTimeField()
-    quantity = models.TextField()
+    quantity = models.IntegerField()
     isConfirmedByHeritage = models.BooleanField(default=False)
     isConfirmedByCPD = models.BooleanField(default=False)
     isConfirmedByArbitrator = models.BooleanField(default=False)
@@ -27,7 +27,7 @@ class Provider(models.Model):
     isChecked = models.BooleanField(default=False)
     isReturned = models.BooleanField(default=False)
     isSchedule = models.BooleanField(default=False)
-    createAt = models.DateTimeField(null=True)
+    createAt = models.DateTimeField(null=True, auto_now_add=True)
     idNotes = models.ForeignKey(Notes, on_delete=models.CASCADE)
     idDriver = models.ForeignKey(Driver, on_delete=models.CASCADE)
 
