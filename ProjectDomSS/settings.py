@@ -57,6 +57,7 @@ CORS_ORIGIN_WHITELIST = [
  'http://192.168.18.5:5173',
  'http://192.168.18.5:5173/',
  '*'
+
 ]
 
 #CORS_ALLOW_HEADERS = [
@@ -82,6 +83,7 @@ CORS_ALLOW_METHODS = [
 
 
 MIDDLEWARE = [
+    
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'corsheaders.middleware.CorsPostCsrfMiddleware',
@@ -128,12 +130,13 @@ DATABASES = {
     }
 }
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # Password validation

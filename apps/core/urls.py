@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework import routers
 from rest_framework.authtoken import views
-from .api import ProviderViewSet, ProviderListAPI
+from .api import ProviderViewSet, ProviderListAPI, ProviderUpdateAPI, ProviderDeleteAPI
 
 
 
@@ -14,5 +14,7 @@ urlpatterns = router.urls
 
 urlpatterns += [
 	path('provider-list', ProviderListAPI.as_view(), name='provider list'),
-	
+	path('provider-update/<int:pk>', ProviderUpdateAPI.as_view(), name='provider update'),
+	path('provider-delete/<int:pk>', ProviderDeleteAPI.as_view(), name='provider remove'),
+
 ]

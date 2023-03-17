@@ -17,7 +17,7 @@ class Notes(models.Model):
 
 class Provider(models.Model):
     providerName = models.CharField(max_length=1024)
-    hour = models.DateField()
+    hour = models.DateTimeField()
     quantity = models.TextField()
     isConfirmedByHeritage = models.BooleanField(default=False)
     isConfirmedByCPD = models.BooleanField(default=False)

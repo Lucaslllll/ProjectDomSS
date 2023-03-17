@@ -35,6 +35,7 @@ class ProviderViewSet(viewsets.ModelViewSet):
         return Response({}, status=status.HTTP_201_CREATED, headers=headers)
     
 
+
 # class ProviderGetViewSet(viewsets.ModelViewSet):
 #     queryset = Provider.objects.all()
 #     serializer_class = ProviderSerializer
@@ -66,6 +67,7 @@ class ProviderListAPI(generics.GenericAPIView):
             driver = DriverSerializer(d)
             notes = NotesSerializer(n)
             dicF = {
+                "id": p.id,
                 "providerName": p.providerName,
                 "hour": p.hour,
                 "quantity": p.quantity,
@@ -84,3 +86,56 @@ class ProviderListAPI(generics.GenericAPIView):
 
 
         return Response(lista)
+
+
+
+class ProviderUpdateAPI(generics.GenericAPIView):
+    serializer_class = ProviderExcludeSerializer
+    queryset = Provider
+
+    def put(self, request, *args, **kwargs):
+        try:
+            p = Provider.objects.get(pk=kwargs["pk"])    
+        except:
+            return Response({"Error": "Id is invalid"}, status=status.HTTP_400_BAD_REQUEST)        
+
+        p.providerName = request.data["provider"]["providerName"]
+        p.hour = request.data["provider"]["hour"]
+        p.quantity = request.data["provider"]["quantity"]
+        p.isConfirmedByHeritage = request.data["provider"]["isConfirmedByHeritage"]
+        p.isConfirmedByCPD = request.data["provider"]["isConfirmedByCPD"]
+        p.isConfirmedByArbitrator = request.data["provider"]["isConfirmedByArbitrator"]
+        p.loadType = request.data["provider"]["loadType"]
+        p.volumeType = request.data["provider"]["volumeType"]
+        p.isChecked = request.data["provider"]["isChecked"]
+        p.isReturned = request.data["provider"]["isReturned"]
+        p.isSchedule = request.data["provider"]["isSchedule"]
+
+        try:
+            p.save()
+        except:
+            return Response({"Error": "Error in Update"}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(ProviderExcludeSerializer(p).data, status=status.HTTP_200_OK)
+
+
+
+class ProviderDeleteAPI(generics.GenericAPIView):
+    serializer_class = ProviderSerializer
+    queryset = Provider
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            p = Provider.objects.get(id=kwargs["pk"])
+        except:
+            return Response({"Error": "Id is invalid"}, status=status.HTTP_400_BAD_REQUEST)
+
+    
+        d = Driver.objects.get(id=p.idDriver.id)
+        n = Notes.objects.get(id=p.idNotes.id)
+
+        n.delete()
+        d.delete()
+        p.delete()        
+
+        return Response({}, status=status.HTTP_200_OK)
