@@ -41,3 +41,9 @@ class AllSerializer(serializers.ModelSerializer):
 class ProviderFilterDateSerializer(serializers.Serializer):
     startTime = serializers.DateTimeField()
     endTime = serializers.DateTimeField()
+
+
+class ProviderFilterScheduleSerializer(serializers.Serializer):
+    startTime = serializers.DateTimeField()
+    endTime = serializers.DateTimeField()
+    isSchedule = serializers.BooleanField()
