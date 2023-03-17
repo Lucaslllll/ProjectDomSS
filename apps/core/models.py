@@ -1,4 +1,7 @@
 from django.db import models
+from datetime import datetime, timedelta, time
+from django.utils import timezone
+
 # Create your models here.
 
 
@@ -27,7 +30,7 @@ class Provider(models.Model):
     isChecked = models.BooleanField(default=False)
     isReturned = models.BooleanField(default=False)
     isSchedule = models.BooleanField(default=False)
-    createAt = models.DateTimeField(null=True, auto_now_add=True)
+    createAt = models.DateTimeField(default=timezone.now, blank=True)
     idNotes = models.ForeignKey(Notes, on_delete=models.CASCADE)
     idDriver = models.ForeignKey(Driver, on_delete=models.CASCADE)
 

@@ -82,6 +82,7 @@ class ProviderListAPI(generics.GenericAPIView):
                 "isChecked": p.isChecked,
                 "isReturned": p.isReturned,
                 "isSchedule": p.isSchedule,
+                "createAt": p.createAt,
                 "notes": notes.data,
                 "driver": driver.data
             }
@@ -256,6 +257,52 @@ class ProviderScheduleDateAPI(generics.GenericAPIView):
             }
 
             lista.append(dicF)
+
+
+        return Response(lista, status=status.HTTP_200_OK)
+
+
+class ProviderSchedulePeriodAPI(generics.GenericAPIView):
+    serializer_class = ProviderFilterDateSerializer
+    queryset = Provider
+
+    def post(self, request, *args, **kwargs):
+        serializer = ProviderFilterDateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        lista = []
+ 
+
+        for p in Provider.objects.all().filter(createAt__gt=request.data['startTime'], createAt__lt=request.data["endTime"]):
+            d = Driver.objects.get(id=p.idDriver.id)
+            n = Notes.objects.get(id=p.idNotes.id)
+
+
+            if timedelta(hours=p.createAt.hour) >= timedelta(hours=12):
+
+                driver = DriverSerializer(d)
+                notes = NotesSerializer(n)
+
+
+                dicF = {
+                    "id": p.id,
+                    "providerName": p.providerName,
+                    "hour": p.hour,
+                    "quantity": p.quantity,
+                    "isConfirmedByHeritage": p.isConfirmedByHeritage,
+                    "isConfirmedByCPD": p.isConfirmedByCPD,
+                    "isConfirmedByArbitrator": p.isConfirmedByArbitrator,
+                    "loadType": p.loadType,
+                    "volumeType": p.volumeType,
+                    "isChecked": p.isChecked,
+                    "isReturned": p.isReturned,
+                    "isSchedule": p.isSchedule,
+                    "createAt": p.createAt,
+                    "notes": notes.data,
+                    "driver": driver.data
+                }
+
+                lista.append(dicF)
 
 
         return Response(lista, status=status.HTTP_200_OK)
