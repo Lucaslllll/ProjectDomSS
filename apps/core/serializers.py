@@ -38,3 +38,6 @@ class AllSerializer(serializers.ModelSerializer):
         model = Provider
         fields = ['provider', 'notes', 'driver']
 
+class ProviderFilterDateSerializer(serializers.Serializer):
+    datetime1 = serializers.DateTimeField()
+    datetime2 = serializers.DateTimeField()

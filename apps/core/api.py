@@ -3,8 +3,10 @@ from rest_framework.response import Response
 
 from .models import Provider, Notes, Driver
 from .serializers import (ProviderSerializer, DriverSerializer, NotesSerializer,
-                            AllSerializer, ProviderExcludeSerializer)
+                            AllSerializer, ProviderExcludeSerializer, ProviderFilterDateSerializer)
 
+
+from datetime import datetime, timedelta, time
 
 
 
@@ -166,12 +168,43 @@ class ProviderDeleteAPI(generics.GenericAPIView):
 
 
 
-class ProviderFilterDateAPI(generics.RetrieveAPIView):
-    serializer_class = ProviderExcludeSerializer
+class ProviderFilterDateAPI(generics.GenericAPIView):
+    serializer_class = ProviderFilterDateSerializer
     queryset = Provider
 
-    def retrieve(self, request, *args, **kwargs):
-        try:
-            p = Provider.objects.get(id=kwargs["pk"])
-        except:
-            return Response({"Error": "Id is invalid"}, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, *args, **kwargs):
+        serializer = ProviderFilterDateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        lista = []
+        
+        for p in Provider.objects.all().filter(createAt__range=[request.data['datetime1'], request.data['datetime2']]):
+            d = Driver.objects.get(id=p.idDriver.id)
+            n = Notes.objects.get(id=p.idNotes.id)
+
+            driver = DriverSerializer(d)
+            notes = NotesSerializer(n)
+
+
+            dicF = {
+                "id": p.id,
+                "providerName": p.providerName,
+                "hour": p.hour,
+                "quantity": p.quantity,
+                "isConfirmedByHeritage": p.isConfirmedByHeritage,
+                "isConfirmedByCPD": p.isConfirmedByCPD,
+                "isConfirmedByArbitrator": p.isConfirmedByArbitrator,
+                "loadType": p.loadType,
+                "volumeType": p.volumeType,
+                "isChecked": p.isChecked,
+                "isReturned": p.isReturned,
+                "isSchedule": p.isSchedule,
+                "notes": notes.data,
+                "driver": driver.data
+            }
+
+            lista.append(dicF)
+
+
+        return Response(lista, status=status.HTTP_200_OK)
+
