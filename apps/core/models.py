@@ -27,6 +27,7 @@ class Provider(models.Model):
     isChecked = models.BooleanField(default=False)
     isReturned = models.BooleanField(default=False)
     isSchedule = models.BooleanField(default=False)
+    createAt = models.DateTimeField(null=True)
     idNotes = models.ForeignKey(Notes, on_delete=models.CASCADE)
     idDriver = models.ForeignKey(Driver, on_delete=models.CASCADE)
 
