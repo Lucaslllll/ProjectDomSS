@@ -186,7 +186,7 @@ class ProviderFilterDateAPI(generics.GenericAPIView):
         # posted__gte=start_dt, posted__lt=end_dt
 
         
-        for p in Provider.objects.all().filter(createAt__gt=request.data['startTime'], createAt__lt=request.data["endTime"]):
+        for p in Provider.objects.all().filter(hour__gt=request.data['startTime'], hour__lt=request.data["endTime"]):
             d = Driver.objects.get(id=p.idDriver.id)
             n = Notes.objects.get(id=p.idNotes.id)
 
@@ -230,7 +230,7 @@ class ProviderScheduleDateAPI(generics.GenericAPIView):
         lista = []
  
 
-        for p in Provider.objects.all().filter(createAt__gt=request.data['startTime'], createAt__lt=request.data["endTime"], isSchedule=request.data["isSchedule"]):
+        for p in Provider.objects.all().filter(hour__gt=request.data['startTime'], hour__lt=request.data["endTime"], isSchedule=request.data["isSchedule"]):
             d = Driver.objects.get(id=p.idDriver.id)
             n = Notes.objects.get(id=p.idNotes.id)
 
@@ -273,12 +273,12 @@ class ProviderSchedulePeriodAPI(generics.GenericAPIView):
         lista = []
  
 
-        for p in Provider.objects.all().filter(createAt__gt=request.data['startTime'], createAt__lt=request.data["endTime"]):
+        for p in Provider.objects.all().filter(hour__gt=request.data['startTime'], hour__lt=request.data["endTime"]):
             d = Driver.objects.get(id=p.idDriver.id)
             n = Notes.objects.get(id=p.idNotes.id)
 
 
-            if timedelta(hours=p.createAt.hour) >= timedelta(hours=12):
+            if timedelta(hours=p.hour.hour) >= timedelta(hours=12):
 
                 driver = DriverSerializer(d)
                 notes = NotesSerializer(n)
